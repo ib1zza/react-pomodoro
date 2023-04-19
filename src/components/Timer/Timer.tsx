@@ -1,58 +1,29 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import s from "./Timer.module.scss";
-import { motion, useMotionValue, useMotionValueEvent } from "framer-motion";
-import { Config, Mode } from "@/App";
+import {motion} from "framer-motion";
+import {Mode} from "@/App";
 import sound from "@assets/mp3/endsound.mp3";
-import { Howl, Howler } from "howler";
+import {Howl} from "howler";
+import {getFormattedTime} from "@utils/getFormattedTime";
+import {nextMode} from "@utils/nextMode";
+
 interface ITimerProps {
   mode: Mode;
-  config: Config;
+  userTime: number;
   setMode: React.Dispatch<React.SetStateAction<Mode>>;
+  counter: number;
+  setCounter: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export function nextMode(mode: Mode): Mode {
-  console.log("nextMode", mode);
-  switch (mode) {
-    case Mode.ACTIVE:
-      return Mode.SHORT_BREAK;
-    case Mode.SHORT_BREAK:
-      return Mode.LONG_BREAK;
-    case Mode.LONG_BREAK:
-      return Mode.ACTIVE;
-    default:
-      return Mode.NOT_STARTED;
-  }
-}
-
-const getTimeByMode = (config: Config, mode: Mode): number => {
-  switch (mode) {
-    case Mode.ACTIVE:
-      return config.pomodoro * 60;
-    case Mode.SHORT_BREAK:
-      return config.shortBreak * 60;
-    case Mode.LONG_BREAK:
-      return config.longBreak * 60;
-    default:
-      return config.pomodoro * 60;
-  }
-};
-
-const getFormattedTime = (time: number): string => {
-  const minutes = Math.floor(time / 60);
-  const seconds = time % 60;
-  return `${minutes < 10 ? "0" : ""}${minutes > 0 ? minutes : "0"}:${
-    seconds < 10 ? "0" : ""
-  }${seconds > 0 ? seconds : "0"}`;
-};
-
-const Timer: React.FC<ITimerProps> = ({ mode, config, setMode }) => {
+const Timer: React.FC<ITimerProps> = ({ mode, userTime, setMode, counter, setCounter }) => {
   let width = 300;
-  const userTime = getTimeByMode(config, mode);
   const [progress, setProgress] = useState(0);
   const [timeLeft, setTimeLeft] = useState(userTime);
   const progressRef = useRef(progress);
   const timeLeftRef = useRef(timeLeft);
   const correctMode = useRef(mode);
+  const currentCounter = useRef(counter);
+
   const playEndSound = new Howl({
     src: [sound],
     volume: 0.1,
@@ -76,16 +47,28 @@ const Timer: React.FC<ITimerProps> = ({ mode, config, setMode }) => {
     }
 
     let int = setInterval(() => {
-      if (progressRef.current >= 1) {
+      if (progressRef.current >= 1 || timeLeftRef.current <=0) {
         console.log("timer finished");
         progressRef.current = 0;
         setProgress(0);
         clearInterval(int);
-        setMode(nextMode(mode));
+
+        if(mode === Mode.ACTIVE) {
+          if( currentCounter.current  >= 4){
+            setCounter(1)
+            currentCounter.current = 1;
+          } else {
+            currentCounter.current = currentCounter.current + 1;
+            setCounter(currentCounter.current);
+          }
+        }
+        setMode(nextMode(mode, currentCounter.current >= 4));
         playEndSound.play();
         return;
       }
-      progressRef.current = +(progressRef.current + 1 / userTime).toFixed(2);
+
+      progressRef.current = +((userTime - timeLeftRef.current) / userTime).toFixed(4);
+      console.log(userTime, progressRef.current);
       setProgress(progressRef.current);
       timeLeftRef.current = timeLeftRef.current - 1;
       setTimeLeft(timeLeftRef.current);

@@ -30,10 +30,16 @@ const Controls: React.FC<IControlsProps> = ({ setMode, mode }) => {
       ? "Start"
       : "Pause";
 
+  const cancelText =
+      mode === Mode.ACTIVE ?
+      "Cancel" :
+      mode === Mode.SHORT_BREAK || mode === Mode.LONG_BREAK ?
+      "Skip break" : "Cancel";
+
   return (
     <div className={s.container}>
       <button onClick={handlePause}>{pauseText}</button>
-      <button onClick={handleCancel}>Cancel</button>
+      <button onClick={handleCancel}>{cancelText}</button>
     </div>
   );
 };

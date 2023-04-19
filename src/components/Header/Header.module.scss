@@ -1,4 +1,4 @@
-
+@import "src/scss/vars";
 .logo {
   padding-top: 18px;
   text-align: center;
@@ -6,6 +6,11 @@
   font-size: 32px;
   line-height: 40px;
   margin-bottom: 40px;
+
+  .settings {
+    font-size: 32px;
+
+  }
 }
 
 .buttons {
@@ -15,18 +20,24 @@
   align-items: center;
   width: 100%;
   max-width: 500px;
+  gap: 10px;
+}
 
-  button {
-    padding: 10px 20px;
-    background: #E93C3C;
-    border-radius: 25px;
-    border: none;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 20px;
-    text-align: center;
 
-    color: #FFF8EE;
-
-  }
+.mode {
+  padding: 10px 20px;
+  background: #E93C3C;
+  border-radius: 25px;
+  border: none;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  text-align: center;
+  color: $accent-text;
+}
+.active{
+  border: 2px solid $accent-bg;
+  background: $default-bg;
+  color: $default-text;
+  font-size: 22px;
 }

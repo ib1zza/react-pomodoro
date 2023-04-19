@@ -1,0 +1,18 @@
+@import "src/scss/vars";
+
+.container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  button {
+    background: $accent-bg;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 24px;
+    line-height: 30px;
+    /* identical to box height */
+    text-align: center;
+
+    color: $accent-text;
+  }
+}

@@ -1,0 +1,54 @@
+@import "src/scss/vars";
+
+$strokeWidth: 20px;
+
+
+.timer {
+  width: 300px;
+  height: 300px;
+  margin: 40px auto;
+  //margin-top: 40px;
+  //border: 2px solid black;
+  position: relative;
+}
+circle {
+  stroke-dashoffset: 0;
+  stroke-width: 15%;
+  fill: none;
+}
+
+#progress {
+  transform: rotate(-90deg);
+}
+
+.indicator {
+  fill: none;
+  stroke: $timer-line-pomodoro;
+  stroke-width: $strokeWidth;
+  stroke-linecap: round;
+  -webkit-transition: all 1s linear;
+  -moz-transition: all 1s linear;
+  -ms-transition: all 1s linear;
+  -o-transition: all 1s linear;
+  transition: all 1s linear;
+}
+
+.active {
+  stroke: $timer-line-break;
+}
+.bg {
+  stroke-width: $strokeWidth;
+  stroke: $timer-bg;
+  opacity: 0.3;
+}
+
+.time {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  position: absolute;
+  font-size: 52px;
+  font-weight: bold;
+  text-align: center;
+}

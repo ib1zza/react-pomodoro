@@ -1,6 +1,7 @@
 import React from "react";
 import s from "./Controls.module.scss";
 import { Mode } from "@/App";
+import Button from "@components/UI/Button/Button";
 
 interface IControlsProps {
   setMode: React.Dispatch<React.SetStateAction<Mode>>;
@@ -38,8 +39,9 @@ const Controls: React.FC<IControlsProps> = ({ setMode, mode }) => {
 
   return (
     <div className={s.container}>
-      <button onClick={handlePause}>{pauseText}</button>
-      <button onClick={handleCancel}>{cancelText}</button>
+      <Button onClick={handlePause} >{pauseText}</Button>
+      <Button onClick={handleCancel}>{cancelText}</Button>
+
     </div>
   );
 };

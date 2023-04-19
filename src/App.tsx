@@ -31,12 +31,6 @@ const config: Config = {
     longBreak: 20,
 };
 
-const data = {
-    pomodoroCounter: 0,
-    config: config,
-    currentMode: Mode.NOT_STARTED,
-}
-
 function App() {
     const [currentMode, setCurrentMode] = useLocalStorage<Mode>("currentMode", Mode.NOT_STARTED);
     const [pomodoroCounter, setPomodoroCounter] = useLocalStorage<number>("currentCount", 0);
@@ -45,9 +39,10 @@ function App() {
 
     const [config, setConfig] = useLocalStorage<Config>("config", {
         pomodoro: 25,
-        shortBreak: 5,
-        longBreak: 20,
+        shortBreak:  5,
+        longBreak:  20,
     });
+    console.log(currentMode)
 
     useEffect(() => {
         if(currentMode !== Mode.PAUSED)
@@ -66,8 +61,7 @@ function App() {
     return (
         <>
         <div className="App">
-            <h1>{currentMode}</h1>
-            <Header openPopup={open} mode={prevMode}/>
+            <Header openPopup={open} mode={prevMode} isOpened={isOpen}/>
             <Timer userTime={userTime} counter={pomodoroCounter} setCounter={setPomodoroCounter} mode={currentMode}
                    setMode={setCurrentMode}/>
             <Controls mode={currentMode} setMode={setCurrentMode}/>

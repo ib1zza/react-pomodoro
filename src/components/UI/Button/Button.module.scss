@@ -1,0 +1,12 @@
+@import "src/scss/vars";
+
+.button {
+  background: $accent-bg;
+  border-radius: 25px;
+  padding: 10px 50px;
+  font-size: 24px;
+  line-height: 30px;
+  text-align: center;
+
+  color: $accent-text;
+}

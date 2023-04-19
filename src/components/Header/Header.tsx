@@ -9,31 +9,34 @@ interface IHeaderProps {
 
     openPopup: () => void;
     mode: Mode;
-
+    isOpened: boolean;
 }
 
-const Header: React.FC<IHeaderProps> = ({openPopup, mode}) => {
+const Header: React.FC<IHeaderProps> = ({openPopup, mode, isOpened}) => {
 
     return (
 
         <div>
-            <h1 className={s.logo}>Pomodoro <button className={s.settings} onClick={openPopup}><FontAwesomeIcon
-                icon={faGear}/></button></h1>
+            <h1 className={s.logo}>Pomodoro <motion.button animate={{rotate: isOpened ? "60deg" : "0deg"}}
+                                                           className={s.settings} onClick={openPopup}><FontAwesomeIcon
+                icon={faGear}/></motion.button></h1>
 
-            {mode !== Mode.NOT_STARTED &&  <div className={s.buttons}>
-                <motion.div animate={{flexGrow: mode === Mode.ACTIVE ? 1 : 0}}
-                            className={s.mode + " " + (mode === Mode.ACTIVE ? s.active : "")}>
-                    pomodoro
-                </motion.div>
-                <motion.div animate={{flexGrow: mode === Mode.SHORT_BREAK ? 1 : 0}}
-                            className={s.mode + " " + (mode === Mode.SHORT_BREAK ? s.active : "")}>
-                    short break
-                </motion.div>
-                <motion.div animate={{flexGrow: mode === Mode.LONG_BREAK ? 1 : 0}}
-                            className={s.mode + " " + (mode === Mode.LONG_BREAK ? s.active : "")}>
-                    long break
-                </motion.div>
-            </div>}
+            {mode !== Mode.NOT_STARTED &&
+                <div className={s.buttons}>
+                    <motion.div animate={{flexGrow: mode === Mode.ACTIVE ? 1 : 0}}
+                                className={s.mode + " " + (mode === Mode.ACTIVE ? s.active : "")}>
+                        pomodoro
+                    </motion.div>
+                    <motion.div animate={{flexGrow: mode === Mode.SHORT_BREAK ? 1 : 0}}
+                                className={s.mode + " " + (mode === Mode.SHORT_BREAK ? s.active : "")}>
+                        short break
+                    </motion.div>
+                    <motion.div animate={{flexGrow: mode === Mode.LONG_BREAK ? 1 : 0}}
+                                className={s.mode + " " + (mode === Mode.LONG_BREAK ? s.active : "")}>
+                        long break
+                    </motion.div>
+                </div>
+            }
 
 
         </div>

@@ -21,6 +21,13 @@
   width: 100%;
   max-width: 500px;
   gap: 10px;
+
+  @media screen and (max-width: 530px) {
+    flex-direction: column;
+    &>div:not(.active)  {
+      display: none;
+    }
+  }
 }
 
 

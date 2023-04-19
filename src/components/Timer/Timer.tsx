@@ -17,9 +17,7 @@ interface ITimerProps {
 
 const Timer: React.FC<ITimerProps> = ({ mode, userTime, setMode, counter, setCounter }) => {
   let width = 300;
-  const [progress, setProgress] = useState(0);
   const [timeLeft, setTimeLeft] = useState(userTime);
-  const progressRef = useRef(progress);
   const timeLeftRef = useRef(timeLeft);
   const correctMode = useRef(mode);
   const currentCounter = useRef(counter);
@@ -31,8 +29,6 @@ const Timer: React.FC<ITimerProps> = ({ mode, userTime, setMode, counter, setCou
 
   useEffect(() => {
     if (mode === Mode.NOT_STARTED) {
-      setProgress(0);
-      progressRef.current = 0;
       setTimeLeft(userTime);
       timeLeftRef.current = userTime;
       return;
@@ -47,10 +43,9 @@ const Timer: React.FC<ITimerProps> = ({ mode, userTime, setMode, counter, setCou
     }
 
     let int = setInterval(() => {
-      if (progressRef.current >= 1 || timeLeftRef.current <=0) {
+      if (timeLeftRef.current <=0) {
         console.log("timer finished");
-        progressRef.current = 0;
-        setProgress(0);
+
         clearInterval(int);
 
         if(mode === Mode.ACTIVE) {
@@ -67,9 +62,6 @@ const Timer: React.FC<ITimerProps> = ({ mode, userTime, setMode, counter, setCou
         return;
       }
 
-      progressRef.current = +((userTime - timeLeftRef.current) / userTime).toFixed(4);
-      console.log(userTime, progressRef.current);
-      setProgress(progressRef.current);
       timeLeftRef.current = timeLeftRef.current - 1;
       setTimeLeft(timeLeftRef.current);
     }, 1000);
@@ -108,7 +100,7 @@ const Timer: React.FC<ITimerProps> = ({ mode, userTime, setMode, counter, setCou
               ? s.active
               : "")
           }
-          strokeDasharray={`${progress}, 1`}
+          strokeDasharray={`${((userTime - timeLeft) / userTime).toFixed(4)}, 1`}
         />
       </svg>
       <div className={s.time}>

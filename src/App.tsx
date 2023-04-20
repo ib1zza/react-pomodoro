@@ -8,6 +8,8 @@ import {usePopup} from "@hooks/usePopup";
 import {AnimatePresence} from "framer-motion";
 import Settings from "@components/Settings/Settings";
 import {getTimeByMode} from "@utils/getTimeByMode";
+import PomodoroHistory from "@components/PomodoroHistory/PomodoroHistory";
+import {useHistory} from "@hooks/useHistory";
 
 export enum Mode {
     ACTIVE = "ACTIVE",
@@ -35,8 +37,8 @@ function App() {
     const [currentMode, setCurrentMode] = useLocalStorage<Mode>("currentMode", Mode.NOT_STARTED);
     const [pomodoroCounter, setPomodoroCounter] = useLocalStorage<number>("currentCount", 0);
     const {open, close, isOpen, } = usePopup();
-    const [prevMode, setPrevMode] = useState<Mode>(Mode.NOT_STARTED);
-
+    const [prevMode, setPrevMode] = useState<Mode>(currentMode);
+    const {history, addRecord} = useHistory()
     const [config, setConfig] = useLocalStorage<Config>("config", {
         pomodoro: 25,
         shortBreak:  5,
@@ -46,15 +48,12 @@ function App() {
 
     useEffect(() => {
         if(currentMode !== Mode.PAUSED)
-            setPrevMode(currentMode)
-    }, [currentMode]);
+            setPrevMode(currentMode);
 
-    useEffect(() => {
-        if(currentMode === Mode.NOT_STARTED){
+        if(currentMode === Mode.NOT_STARTED)
             setPrevMode(Mode.ACTIVE);
-        }
-    }, [currentMode]);
 
+    }, [currentMode]);
 
 
     const userTime = getTimeByMode(config, currentMode);
@@ -63,8 +62,9 @@ function App() {
         <div className="App">
             <Header openPopup={open} mode={prevMode} isOpened={isOpen}/>
             <Timer userTime={userTime} counter={pomodoroCounter} setCounter={setPomodoroCounter} mode={currentMode}
-                   setMode={setCurrentMode}/>
+                   setMode={setCurrentMode} addRecord={addRecord}/>
             <Controls mode={currentMode} setMode={setCurrentMode}/>
+            {history.length > 0 && <PomodoroHistory history={history}/>}
         </div>
             <AnimatePresence>
                 {isOpen && <Settings close={close} config={config} setConfig={setConfig}/>}

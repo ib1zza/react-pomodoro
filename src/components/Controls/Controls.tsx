@@ -1,7 +1,9 @@
 import React from "react";
 import s from "./Controls.module.scss";
-import { Mode } from "@/App";
+import {Mode} from "@/App";
 import Button from "@components/UI/Button/Button";
+import {faPause, faPlay, faXmark} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 interface IControlsProps {
   setMode: React.Dispatch<React.SetStateAction<Mode>>;
@@ -9,6 +11,7 @@ interface IControlsProps {
 }
 const Controls: React.FC<IControlsProps> = ({ setMode, mode }) => {
   const prevMode = React.useRef(mode);
+
   const handlePause = () => {
     if (mode !== Mode.PAUSED) prevMode.current = mode;
     setMode(
@@ -39,8 +42,8 @@ const Controls: React.FC<IControlsProps> = ({ setMode, mode }) => {
 
   return (
     <div className={s.container}>
-      <Button onClick={handlePause} >{pauseText}</Button>
-      <Button onClick={handleCancel}>{cancelText}</Button>
+      <Button onClick={handlePause} >{(mode === Mode.PAUSED || mode === Mode.NOT_STARTED) ? <FontAwesomeIcon icon={faPlay} /> : <FontAwesomeIcon icon={faPause} />} {pauseText}</Button>
+      {mode !== Mode.NOT_STARTED && <Button onClick={handleCancel}><FontAwesomeIcon icon={faXmark} /> {cancelText}</Button>}
 
     </div>
   );

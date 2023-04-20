@@ -6,108 +6,125 @@ import sound from "@assets/mp3/endsound.mp3";
 import {Howl} from "howler";
 import {getFormattedTime} from "@utils/getFormattedTime";
 import {nextMode} from "@utils/nextMode";
+import {HistoryItem} from "@components/PomodoroHistory/PomodoroHistory";
 
 interface ITimerProps {
-  mode: Mode;
-  userTime: number;
-  setMode: React.Dispatch<React.SetStateAction<Mode>>;
-  counter: number;
-  setCounter: React.Dispatch<React.SetStateAction<number>>;
+    mode: Mode;
+    userTime: number;
+    setMode: React.Dispatch<React.SetStateAction<Mode>>;
+    counter: number;
+    setCounter: React.Dispatch<React.SetStateAction<number>>;
+    addRecord: (newHistory: HistoryItem) => void;
 }
 
-const Timer: React.FC<ITimerProps> = ({ mode, userTime, setMode, counter, setCounter }) => {
-  let width = 300;
-  const [timeLeft, setTimeLeft] = useState(userTime);
-  const timeLeftRef = useRef(timeLeft);
-  const correctMode = useRef(mode);
-  const currentCounter = useRef(counter);
 
-  const playEndSound = new Howl({
-    src: [sound],
-    volume: 0.1,
-  });
+const Timer: React.FC<ITimerProps> = ({mode, userTime, setMode, counter, setCounter, addRecord}) => {
+    let width = 300;
 
-  useEffect(() => {
-    if (mode === Mode.NOT_STARTED) {
-      setTimeLeft(userTime);
-      timeLeftRef.current = userTime;
-      return;
-    }
-    if (mode === Mode.PAUSED) {
-      return;
-    }
+    const [timeLeft, setTimeLeft] = useState(userTime);
+    const timeLeftRef = useRef(timeLeft);
+    const correctMode = useRef(mode);
+    const currentCounter = useRef(counter);
 
-    if (correctMode.current !== mode) {
-      correctMode.current = mode;
-      timeLeftRef.current = userTime;
-    }
-
-    let int = setInterval(() => {
-      if (timeLeftRef.current <=0) {
+    const endTimer = (callback: () => void) => {
         console.log("timer finished");
+        callback();
 
-        clearInterval(int);
+        if (mode === Mode.ACTIVE) {
+            addRecord({
+                id: Date.now(),
+                timeStart: Date.now() - userTime * 1000,
+                timeEnd: Date.now(),
+                pomodoroLength: userTime
+            })
+        }
 
-        if(mode === Mode.ACTIVE) {
-          if( currentCounter.current  >= 4){
-            setCounter(1)
-            currentCounter.current = 1;
-          } else {
-            currentCounter.current = currentCounter.current + 1;
-            setCounter(currentCounter.current);
-          }
+        if (mode === Mode.ACTIVE) {
+            if (currentCounter.current >= 4) {
+                setCounter(1)
+                currentCounter.current = 1;
+            } else {
+                currentCounter.current = currentCounter.current + 1;
+                setCounter(currentCounter.current);
+            }
         }
         setMode(nextMode(mode, currentCounter.current >= 4));
         playEndSound.play();
-        return;
-      }
+    }
 
-      timeLeftRef.current = timeLeftRef.current - 1;
-      setTimeLeft(timeLeftRef.current);
-    }, 1000);
+    const playEndSound = new Howl({
+        src: [sound],
+        volume: 0.1,
+    });
 
-    return () => {
-      clearInterval(int);
-    };
-  }, [mode, userTime]);
+    useEffect(() => {
+        if (mode === Mode.NOT_STARTED) {
+            setTimeLeft(userTime);
+            timeLeftRef.current = userTime;
+            return;
+        }
+        if (mode === Mode.PAUSED) {
+            return;
+        }
 
-  return (
-    <div className={s.timer}>
-      <audio id={s.audio} src={""}></audio>
+        if (correctMode.current !== mode) {
+            correctMode.current = mode;
+            timeLeftRef.current = userTime;
+        }
 
-      <svg
-        id={s.progress}
-        width={width}
-        height={width}
-        viewBox={`0 0 ${width} ${width}`}
-      >
-        <circle
-          cx={width / 2}
-          cy={width / 2}
-          r={width / 2 - 20}
-          pathLength="1"
-          className={s.bg}
-        />
-        <motion.circle
-          cx={width / 2}
-          cy={width / 2}
-          r={width / 2 - 20}
-          pathLength="1"
-          className={
-            s.indicator +
-            " " +
-            (mode === Mode.LONG_BREAK || mode === Mode.SHORT_BREAK
-              ? s.active
-              : "")
-          }
-          strokeDasharray={`${((userTime - timeLeft) / userTime).toFixed(4)}, 1`}
-        />
-      </svg>
-      <div className={s.time}>
-        <span>{getFormattedTime(timeLeft)}</span>
-      </div>
-    </div>
-  );
+        let int = setInterval(() => {
+            if (timeLeftRef.current <= 0) {
+                endTimer(() => clearInterval(int));
+                return;
+            }
+
+            timeLeftRef.current = timeLeftRef.current - 1;
+            setTimeLeft(timeLeftRef.current);
+        }, 1000);
+
+        return () => {
+            clearInterval(int);
+        };
+
+    }, [mode, userTime]);
+
+    return (
+        <div className={s.timer}>
+            <audio id={s.audio} src={""}></audio>
+
+            <svg
+                id={s.progress}
+                width={width}
+                height={width}
+                viewBox={`0 0 ${width} ${width}`}
+            >
+                <circle
+                    cx={width / 2}
+                    cy={width / 2}
+                    r={width / 2 - 20}
+                    pathLength="1"
+                    className={s.bg}
+                />
+                <motion.circle
+                    cx={width / 2}
+                    cy={width / 2}
+                    r={width / 2 - 20}
+                    pathLength="1"
+                    className={
+                        s.indicator +
+                        " " +
+                        (mode === Mode.LONG_BREAK || mode === Mode.SHORT_BREAK
+                            ? s.active
+                            : "")
+                    }
+                    strokeDasharray={`${((userTime - timeLeft) / userTime).toFixed(4)}, 1`}
+                />
+            </svg>
+            <div className={s.time}>
+                <span>{getFormattedTime(timeLeft)}</span>
+            </div>
+        </div>
+    );
 };
 
 export default Timer;

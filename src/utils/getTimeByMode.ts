@@ -1,5 +1,7 @@
 import {Config, Mode} from "@/App";
 
+
+// returns time in seconds
 export const getTimeByMode = (config: Config, mode: Mode): number => {
 
     switch (mode) {

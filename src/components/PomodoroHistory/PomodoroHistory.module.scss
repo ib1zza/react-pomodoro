@@ -1,0 +1,26 @@
+@import "src/scss/vars";
+
+
+.container {
+  padding: 15px;
+  border-radius: 15px;
+  border: 2px solid $accent-bg;
+  width: calc(100% - 20px);
+  max-width: 900px;
+  margin: 0 auto;
+  margin-top: 40px;
+}
+
+.total {
+  text-align: center;
+  font-size: 24px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.item {
+  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

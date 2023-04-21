@@ -47,8 +47,18 @@ function App() {
     console.log(currentMode)
 
     useEffect(() => {
-        if(currentMode !== Mode.PAUSED)
+        if(currentMode === Mode.PAUSED && prevMode === Mode.PAUSED) {
+            setPrevMode(Mode.NOT_STARTED);
+            setCurrentMode(Mode.NOT_STARTED)
+        }
+
+
+    }, [])
+
+    useEffect(() => {
+        if(currentMode !== Mode.PAUSED) {
             setPrevMode(currentMode);
+        }
 
         if(currentMode === Mode.NOT_STARTED)
             setPrevMode(Mode.ACTIVE);

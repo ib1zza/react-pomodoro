@@ -59,7 +59,10 @@ function App() {
     if (currentMode === Mode.NOT_STARTED) setPrevMode(Mode.ACTIVE);
   }, [currentMode]);
 
-  const userTime = getTimeByMode(config, currentMode);
+  const userTime = getTimeByMode(
+    config,
+    currentMode === Mode.PAUSED ? prevMode : currentMode
+  );
   return (
     <>
       <div className="App">

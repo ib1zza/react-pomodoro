@@ -24,3 +24,17 @@
   align-items: center;
   justify-content: space-between;
 }
+
+.index {
+  width: 30px;
+}
+
+.time {
+
+  @media screen and (max-width: 500px) {
+    span {
+      //display: none;
+      font-size: 14px;
+    }
+  }
+}

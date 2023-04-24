@@ -10,6 +10,8 @@
 body {
     background: $default-bg;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+    padding-bottom: 40px;
 }
 
 button {

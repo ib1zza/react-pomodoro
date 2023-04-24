@@ -4,7 +4,6 @@
   display: flex;
   justify-content: center;
   gap: 30px;
-
   @media screen and (max-width: 450px) {
     flex-direction: column;
   }

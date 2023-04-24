@@ -1,9 +1,9 @@
 import React from "react";
 import s from "./Controls.module.scss";
-import {Mode} from "@/App";
+import { Mode } from "@/App";
 import Button from "@components/UI/Button/Button";
-import {faPause, faPlay, faXmark} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { faPause, faPlay, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface IControlsProps {
   setMode: React.Dispatch<React.SetStateAction<Mode>>;
@@ -35,16 +35,27 @@ const Controls: React.FC<IControlsProps> = ({ setMode, mode }) => {
       : "Pause";
 
   const cancelText =
-      mode === Mode.ACTIVE ?
-      "Cancel" :
-      mode === Mode.SHORT_BREAK || mode === Mode.LONG_BREAK ?
-      "Skip break" : "Cancel";
+    mode === Mode.ACTIVE
+      ? "Cancel"
+      : mode === Mode.SHORT_BREAK || mode === Mode.LONG_BREAK
+      ? "Skip break"
+      : "Cancel";
 
   return (
     <div className={s.container}>
-      <Button onClick={handlePause} >{(mode === Mode.PAUSED || mode === Mode.NOT_STARTED) ? <FontAwesomeIcon icon={faPlay} /> : <FontAwesomeIcon icon={faPause} />} {pauseText}</Button>
-      {mode !== Mode.NOT_STARTED && <Button onClick={handleCancel}><FontAwesomeIcon icon={faXmark} /> {cancelText}</Button>}
-
+      <Button onClick={handlePause}>
+        {mode === Mode.PAUSED || mode === Mode.NOT_STARTED ? (
+          <FontAwesomeIcon icon={faPlay} />
+        ) : (
+          <FontAwesomeIcon icon={faPause} />
+        )}
+        {pauseText}
+      </Button>
+      {mode !== Mode.NOT_STARTED && (
+        <Button onClick={handleCancel}>
+          <FontAwesomeIcon icon={faXmark} /> {cancelText}
+        </Button>
+      )}
     </div>
   );
 };

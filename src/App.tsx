@@ -10,6 +10,8 @@ import Settings from "@components/Settings/Settings";
 import { getTimeByMode } from "@utils/getTimeByMode";
 import PomodoroHistory from "@components/PomodoroHistory/PomodoroHistory";
 import { useHistory } from "@hooks/useHistory";
+import Modal from "@components/UI/Modal/Modal";
+import TodoList from "@components/TodoList/TodoList";
 
 export enum Mode {
   ACTIVE = "ACTIVE",
@@ -17,6 +19,11 @@ export enum Mode {
   SHORT_BREAK = "SHORT_BREAK",
   LONG_BREAK = "LONG_BREAK",
   NOT_STARTED = "NOT_STARTED",
+}
+
+export enum Popup {
+  SETTINGS = "Settings",
+  TODO = "Todo",
 }
 
 export interface Config {
@@ -35,6 +42,7 @@ function App() {
     0
   );
   const { open, close, isOpen } = usePopup();
+  const { open: openTodo, close: closeTodo, isOpen: isOpenTodo } = usePopup();
   const [prevMode, setPrevMode] = useState<Mode>(currentMode);
   const { history, addRecord } = useHistory();
   const [config, setConfig] = useLocalStorage<Config>("config", {
@@ -63,10 +71,23 @@ function App() {
     config,
     currentMode === Mode.PAUSED ? prevMode : currentMode
   );
+
+  const openPopup = (name: Popup) => {
+    switch (name) {
+      case Popup.SETTINGS:
+        open();
+        break;
+      case Popup.TODO:
+        openTodo();
+        break;
+      default:
+        break;
+    }
+  };
   return (
     <>
       <div className="App">
-        <Header openPopup={open} mode={prevMode} isOpened={isOpen} />
+        <Header openPopup={openPopup} isOpened={isOpen} />
         <Timer
           userTime={userTime}
           counter={pomodoroCounter}
@@ -80,7 +101,14 @@ function App() {
       </div>
       <AnimatePresence>
         {isOpen && (
-          <Settings close={close} config={config} setConfig={setConfig} />
+          <Modal title={"Settings"} close={close}>
+            <Settings close={close} config={config} setConfig={setConfig} />
+          </Modal>
+        )}
+        {isOpenTodo && (
+          <Modal title={"Todo"} close={closeTodo}>
+            <TodoList />
+          </Modal>
         )}
       </AnimatePresence>
     </>

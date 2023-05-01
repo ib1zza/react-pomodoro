@@ -9,6 +9,7 @@ import { nextMode } from "@utils/nextMode";
 import { HistoryItem } from "@components/PomodoroHistory/PomodoroHistory";
 import { useTimerContext } from "@/context/TimerContext";
 import { useLocalStorage } from "@hooks/useLocalStorage";
+import { getModeName } from "@utils/getModeName";
 
 interface ITimerProps {
   mode: Mode;
@@ -167,6 +168,9 @@ const Timer: React.FC<ITimerProps> = ({
       </svg>
       <div className={s.time}>
         <span>{getFormattedTime(timeLeft)}</span>
+        {mode !== Mode.NOT_STARTED && (
+          <div className={s.mode}>{getModeName(mode)}</div>
+        )}
       </div>
     </div>
   );

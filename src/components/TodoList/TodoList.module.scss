@@ -1,0 +1,21 @@
+.createTodo {
+  font-size: 20px;
+}
+
+.form {
+  margin-top: 10px;
+  width: 100%;
+
+  input {
+    width: 100%;
+    font-size: 18px;
+    padding: 10px 15px;
+    font-weight: 600;
+    border: 1px solid #b7b7b7;
+
+    &:active, &:focus {
+      outline: none;
+      border: 1px solid #ff0000;
+    }
+  }
+}

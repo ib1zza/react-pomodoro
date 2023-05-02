@@ -1,21 +1,17 @@
-.createTodo {
-  font-size: 20px;
+
+.todos {
+    margin-top: 20px;
+    width: 100%;
 }
 
-.form {
-  margin-top: 10px;
-  width: 100%;
+.createTodo{
+    margin-left: auto;
+    margin-right: auto;
+    //display: block;
+}
 
-  input {
-    width: 100%;
-    font-size: 18px;
-    padding: 10px 15px;
-    font-weight: 600;
-    border: 1px solid #b7b7b7;
-
-    &:active, &:focus {
-      outline: none;
-      border: 1px solid #ff0000;
-    }
-  }
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

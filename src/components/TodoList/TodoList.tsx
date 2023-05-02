@@ -5,7 +5,9 @@ import TodoItem from "@components/TodoItem/TodoItem";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "@components/UI/Button/Button";
-import { useToggle } from "@hooks/useToggle";
+
+import { v4 as uuid } from "uuid";
+import CreateTodo from "@components/CreateTodo/CreateTodo";
 
 interface ITodoListProps {}
 
@@ -13,26 +15,44 @@ export interface ITodo {
   id: string;
   title: string;
   completed: boolean;
-  createdAt: Date;
+  createdAt: string;
   order?: number;
 }
 
 const TodoList: React.FC<ITodoListProps> = ({}) => {
   const [todos, setTodos] = useLocalStorage<ITodo[]>("todos", []);
-  const [isCreate, toggleIsCreate] = useToggle(false);
+  const [isCreate, setIsCreate] = useState(false);
+
+  const handleSubmit = (title: string) => {
+    setTodos((prevTodos) => [
+      ...prevTodos,
+      {
+        id: uuid(),
+        title,
+        completed: false,
+        createdAt: new Date().getTime().toString(),
+        order: 1,
+      },
+    ]);
+    setIsCreate(false);
+  };
   return (
     <div className={s.container}>
-      <Button className={s.createTodo} onClick={toggleIsCreate}>
-        Create <FontAwesomeIcon icon={faPlus} />
-      </Button>
-      {isCreate && (
-        <form action="" className={s.form}>
-          <input type="text" placeholder={"Type todo here"} />
-        </form>
+      {isCreate ? (
+        <CreateTodo
+          onSubmit={handleSubmit}
+          onAbort={() => setIsCreate(false)}
+        />
+      ) : (
+        <Button className={s.createTodo} onClick={() => setIsCreate(true)}>
+          Create <FontAwesomeIcon icon={faPlus} />
+        </Button>
       )}
-      {todos.map((todo) => (
-        <TodoItem key={todo.id} todo={todo} />
-      ))}
+      <div className={s.todos}>
+        {todos.map((todo) => (
+          <TodoItem key={todo.id} todo={todo} />
+        ))}
+      </div>
     </div>
   );
 };

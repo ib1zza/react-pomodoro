@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, useEffect } from "react";
 import s from "./Modal.module.scss";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,6 +13,17 @@ const Modal: React.FC<PropsWithChildren<IModalProps>> = ({
   children,
   close,
 }) => {
+  useEffect(() => {
+    function listener(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        close();
+      }
+    }
+    document.addEventListener("keydown", listener);
+    return () => {
+      document.removeEventListener("keydown", listener);
+    };
+  });
   return (
     <motion.div
       className={s.container}

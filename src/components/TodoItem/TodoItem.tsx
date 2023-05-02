@@ -5,6 +5,10 @@ import { ITodo } from "@components/TodoList/TodoList";
 interface ITodoItemProps {
   todo: ITodo;
 }
+
+const convertMsToString = (ms: string) => {
+  return new Date(+ms).toLocaleString();
+};
 const TodoItem: React.FC<ITodoItemProps> = ({ todo }) => {
   const handleCompleteTodo = () => {
     console.log("completed");
@@ -15,9 +19,10 @@ const TodoItem: React.FC<ITodoItemProps> = ({ todo }) => {
         type="checkbox"
         checked={todo.completed}
         onChange={handleCompleteTodo}
+        className={s.checkbox}
       />
       <div className={s.title}>{todo.title}</div>
-      <div className={s.date}>{todo.createdAt.toISOString()}</div>
+      <div className={s.date}>{convertMsToString(todo.createdAt)}</div>
     </div>
   );
 };

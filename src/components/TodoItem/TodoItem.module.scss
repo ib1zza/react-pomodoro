@@ -1,0 +1,13 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  .checkbox {
+    width: 15px;
+    height: 15px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+}

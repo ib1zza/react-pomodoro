@@ -43,6 +43,7 @@ function App() {
   );
   const { open, close, isOpen } = usePopup();
   const { open: openTodo, close: closeTodo, isOpen: isOpenTodo } = usePopup();
+
   const [prevMode, setPrevMode] = useState<Mode>(currentMode);
   const { history, addRecord } = useHistory();
   const [config, setConfig] = useLocalStorage<Config>("config", {
@@ -101,7 +102,7 @@ function App() {
       </div>
       <AnimatePresence>
         {isOpen && (
-          <Modal title={"Settings"} close={close}>
+          <Modal title={"Account"} close={close}>
             <Settings close={close} config={config} setConfig={setConfig} />
           </Modal>
         )}

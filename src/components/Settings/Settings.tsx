@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import s from "./Settings.module.scss";
 import { Config } from "@/App";
+import Login from "@components/Login/Login";
+import { useAuth } from "@/context/AuthContext";
+import UserInfo from "@components/UserInfo/UserInfo";
+import { updateSettings } from "@utils/queries/updateSettings";
+import EditTimeForm from "@components/EditTimeForm/EditTimeForm";
 
 interface ISettingsProps {
   config: Config;
@@ -13,65 +18,41 @@ const testNum = (s: number | string) => {
 };
 
 const Settings: React.FC<ISettingsProps> = ({ close, setConfig, config }) => {
-  const [pomodoro, setPomodoro] = useState<string | number>(config.pomodoro);
-  const [shortBreak, setShortBreak] = useState<string | number>(
-    config.shortBreak
-  );
-  const [longBreak, setLongBreak] = useState<string | number>(config.longBreak);
-  const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
 
-  function handleSave(e: React.FormEvent<HTMLFormElement>) {
+  function handleSave(
+    e: React.FormEvent<HTMLFormElement>,
+    config: { [key in keyof Config]: string | number }
+  ) {
     e.preventDefault();
     console.log("save");
 
-    if (testNum(pomodoro) && testNum(shortBreak) && testNum(longBreak)) {
+    if (
+      testNum(config.pomodoro) &&
+      testNum(config.shortBreak) &&
+      testNum(config.longBreak)
+    ) {
       setConfig({
-        pomodoro: +pomodoro,
-        shortBreak: +shortBreak,
-        longBreak: +longBreak,
+        pomodoro: +config.pomodoro,
+        shortBreak: +config.shortBreak,
+        longBreak: +config.longBreak,
       });
-      close();
-    } else {
-      setError("wrong input");
+
+      if (user?.uid) {
+        updateSettings(user?.uid, {
+          timePomodoro: +config.pomodoro,
+          timeShortBreak: +config.shortBreak,
+          timeLongBreak: +config.longBreak,
+        }).finally(close);
+      }
     }
   }
 
   return (
-    <form className={s.inputs} onSubmit={handleSave}>
-      <div>
-        <label htmlFor="pomodoro">Pomodoro time: </label>
-        <input
-          id={"pomodoro"}
-          type="number"
-          placeholder={config.pomodoro.toFixed(0)}
-          value={pomodoro}
-          onChange={(e) => setPomodoro(e.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor="shortBreak">Short break time: </label>
-        <input
-          id={"shortBreak"}
-          type="number"
-          value={shortBreak}
-          placeholder={config.shortBreak.toFixed(0)}
-          onChange={(e) => setShortBreak(e.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor="longBreak">Long break time: </label>
-        <input
-          id={"longBreak"}
-          type="number"
-          value={longBreak}
-          placeholder={config.longBreak.toFixed(0)}
-          onChange={(e) => setLongBreak(e.target.value)}
-        />
-      </div>
-      {error && <p className={s.error}>{error}</p>}
-
-      <button className={s.submit}>Save</button>
-    </form>
+    <>
+      <EditTimeForm handleSave={handleSave} config={config} />
+      {!user ? <Login /> : <UserInfo user={user} />}
+    </>
   );
 };
 

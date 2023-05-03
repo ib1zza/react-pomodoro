@@ -33,7 +33,7 @@ const Modal: React.FC<PropsWithChildren<IModalProps>> = ({
       animate={{ opacity: 1 }}
     >
       <motion.div
-        className={s.settings}
+        className={s.body}
         onClick={(e) => e.stopPropagation()}
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}

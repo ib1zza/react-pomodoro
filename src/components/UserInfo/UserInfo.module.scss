@@ -8,6 +8,16 @@
   }
 }
 
+.container {
+  display: flex;
+  justify-content: space-between;
+
+  .logout {
+    font-size: 30px;
+  }
+  margin-bottom: 20px;
+}
+
 .name {
   margin-left: 10px;
   .displayName {

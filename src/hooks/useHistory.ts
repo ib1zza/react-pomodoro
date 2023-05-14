@@ -1,12 +1,11 @@
 import { HistoryItem } from "@components/PomodoroHistory/PomodoroHistory";
-import { useLocalStorage } from "@hooks/useLocalStorage";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { getUserInfo } from "@utils/queries/getUserInfo";
 import { addToHistory } from "@utils/queries/addToHistory";
 
 import { db } from "@/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
+import { useLocalStorage } from "@hooks/useLocalStorage";
 
 export const useHistory = (
   initialValue?: HistoryItem[]
@@ -16,8 +15,10 @@ export const useHistory = (
 } => {
   const { user, loading } = useAuth();
 
-  const [history, setHistory] = useState<HistoryItem[]>(initialValue || []);
-  const [userHistory, setUserHistory] = useState(null);
+  const [history, setHistory] = useLocalStorage<HistoryItem[]>(
+    "history",
+    initialValue || []
+  );
 
   useEffect(() => {
     if (!user) return;
@@ -26,6 +27,7 @@ export const useHistory = (
         setHistory(
           (Object.values(doc.data().pomodoroHistory) as HistoryItem[]) || []
         );
+        validateHistory();
         console.log(Object.values(doc.data().pomodoroHistory));
       }
     });
@@ -33,15 +35,6 @@ export const useHistory = (
       unsub();
     };
   }, [user?.uid]);
-
-  // useEffect(() => {
-  //   if (!user) return;
-  //   getUserInfo(user.uid).then((user) => {
-  //     if (!user) return;
-  //
-  //     setUserHistory(user.pomodoroHistory || []);
-  //   });
-  // }, [user]);
 
   const validateHistory = () =>
     setHistory(

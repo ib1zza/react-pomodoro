@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import s from "./Settings.module.scss";
+import React from "react";
 import { Config } from "@/App";
 import Login from "@components/Login/Login";
 import { useAuth } from "@/context/AuthContext";
@@ -50,8 +49,8 @@ const Settings: React.FC<ISettingsProps> = ({ close, setConfig, config }) => {
 
   return (
     <>
-      <EditTimeForm handleSave={handleSave} config={config} />
       {!user ? <Login /> : <UserInfo user={user} />}
+      <EditTimeForm handleSave={handleSave} config={config} />
     </>
   );
 };

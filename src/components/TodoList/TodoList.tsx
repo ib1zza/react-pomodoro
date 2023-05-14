@@ -8,8 +8,11 @@ import Button from "@components/UI/Button/Button";
 
 import { v4 as uuid } from "uuid";
 import CreateTodo from "@components/CreateTodo/CreateTodo";
+import { useTodos } from "@hooks/useTodos";
 
-interface ITodoListProps {}
+interface ITodoListProps {
+  userId: string;
+}
 
 export interface ITodo {
   id: string;
@@ -19,21 +22,20 @@ export interface ITodo {
   order?: number;
 }
 
-const TodoList: React.FC<ITodoListProps> = ({}) => {
-  const [todos, setTodos] = useLocalStorage<ITodo[]>("todos", []);
+const TodoList: React.FC<ITodoListProps> = ({ userId }) => {
+  const { todos, deleteTodo, toggleTodoStatus, createTodo } = useTodos(userId);
+  // const [todos, setTodos] = useLocalStorage<ITodo[]>("todos", []);
   const [isCreate, setIsCreate] = useState(false);
 
   const handleSubmit = (title: string) => {
-    setTodos((prevTodos) => [
-      ...prevTodos,
-      {
-        id: uuid(),
-        title,
-        completed: false,
-        createdAt: new Date().getTime().toString(),
-        order: 1,
-      },
-    ]);
+    createTodo({
+      id: uuid(),
+      title,
+      completed: false,
+      createdAt: new Date().getTime().toString(),
+      order: 1,
+    });
+
     setIsCreate(false);
   };
   return (
@@ -50,7 +52,11 @@ const TodoList: React.FC<ITodoListProps> = ({}) => {
       )}
       <div className={s.todos}>
         {todos.map((todo) => (
-          <TodoItem key={todo.id} todo={todo} />
+          <TodoItem
+            key={todo.id}
+            todo={todo}
+            onComplete={() => toggleTodoStatus(todo.id)}
+          />
         ))}
       </div>
     </div>

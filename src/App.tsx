@@ -12,6 +12,7 @@ import PomodoroHistory from "@components/PomodoroHistory/PomodoroHistory";
 import { useHistory } from "@hooks/useHistory";
 import Modal from "@components/UI/Modal/Modal";
 import TodoList from "@components/TodoList/TodoList";
+import { useAuth } from "@/context/AuthContext";
 
 export enum Mode {
   ACTIVE = "ACTIVE",
@@ -33,6 +34,7 @@ export interface Config {
 }
 
 function App() {
+  const { user } = useAuth();
   const [currentMode, setCurrentMode] = useLocalStorage<Mode>(
     "currentMode",
     Mode.NOT_STARTED
@@ -106,9 +108,9 @@ function App() {
             <Settings close={close} config={config} setConfig={setConfig} />
           </Modal>
         )}
-        {isOpenTodo && (
+        {isOpenTodo && user && (
           <Modal title={"Todo"} close={closeTodo}>
-            <TodoList />
+            <TodoList userId={user.uid} />
           </Modal>
         )}
       </AnimatePresence>

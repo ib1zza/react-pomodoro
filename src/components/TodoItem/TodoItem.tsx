@@ -4,21 +4,19 @@ import { ITodo } from "@components/TodoList/TodoList";
 
 interface ITodoItemProps {
   todo: ITodo;
+  onComplete: () => void;
 }
 
 const convertMsToString = (ms: string) => {
   return new Date(+ms).toLocaleString();
 };
-const TodoItem: React.FC<ITodoItemProps> = ({ todo }) => {
-  const handleCompleteTodo = () => {
-    console.log("completed");
-  };
+const TodoItem: React.FC<ITodoItemProps> = ({ todo, onComplete }) => {
   return (
     <div className={s.container}>
       <input
         type="checkbox"
         checked={todo.completed}
-        onChange={handleCompleteTodo}
+        onChange={onComplete}
         className={s.checkbox}
       />
       <div className={s.title}>{todo.title}</div>

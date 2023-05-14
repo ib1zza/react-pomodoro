@@ -3,17 +3,16 @@ import s from "./UserInfo.module.scss";
 import { User } from "firebase/auth";
 import notFound from "@/assets/images/notFound.png";
 import { getUserInfo } from "@utils/queries/getUserInfo";
+import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useAuth } from "@/context/AuthContext";
+
 interface IUserInfoProps {
   user: User;
 }
 const UserInfo: React.FC<IUserInfoProps> = ({ user }) => {
-  const [info, setInfo] = React.useState<any>(null);
-  useEffect(() => {
-    getUserInfo(user.uid).then((res) => {
-      setInfo(res);
-      console.log(res);
-    });
-  }, []);
+  const { logout } = useAuth();
+
   return (
     <div className={s.container}>
       <div className={s.userInfo}>
@@ -28,6 +27,9 @@ const UserInfo: React.FC<IUserInfoProps> = ({ user }) => {
           <div className={s.displayName}>{user.displayName}</div>
           <div className={s.email}>{user.email}</div>
         </div>
+      </div>
+      <div className={s.logout}>
+        <FontAwesomeIcon icon={faArrowRightFromBracket} onClick={logout} />
       </div>
     </div>
   );

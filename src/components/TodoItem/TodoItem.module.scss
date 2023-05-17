@@ -10,4 +10,14 @@
   .title {
     font-size: 18px;
   }
+
+  .delete {
+    font-size: 20px;
+    color: #f15f5f;
+
+    :hover {
+      color: #9f3d3d;
+    }
+
+  }
 }

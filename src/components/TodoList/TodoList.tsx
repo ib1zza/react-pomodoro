@@ -56,6 +56,7 @@ const TodoList: React.FC<ITodoListProps> = ({ userId }) => {
             key={todo.id}
             todo={todo}
             onComplete={() => toggleTodoStatus(todo.id)}
+            onDelete={() => deleteTodo(todo.id)}
           />
         ))}
       </div>

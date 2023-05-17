@@ -8,15 +8,18 @@ import { Popup } from "@/App";
 interface IHeaderProps {
   openPopup: (name: Popup) => void;
   isOpened: boolean;
+  loggedIn: boolean;
 }
 
-const Header: React.FC<IHeaderProps> = ({ openPopup, isOpened }) => {
+const Header: React.FC<IHeaderProps> = ({ openPopup, isOpened, loggedIn }) => {
   return (
     <div>
       <h1 className={s.logo}>
-        <button className={s.list} onClick={() => openPopup(Popup.TODO)}>
-          <FontAwesomeIcon icon={faList} />
-        </button>
+        {loggedIn && (
+          <button className={s.list} onClick={() => openPopup(Popup.TODO)}>
+            <FontAwesomeIcon icon={faList} />
+          </button>
+        )}
         <span className={s.logoText}>Pomodoro</span>
         <motion.button
           animate={{ rotate: isOpened ? "60deg" : "0deg" }}

@@ -1,16 +1,19 @@
 import React from "react";
 import s from "./TodoItem.module.scss";
 import { ITodo } from "@components/TodoList/TodoList";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface ITodoItemProps {
   todo: ITodo;
   onComplete: () => void;
+  onDelete: (id: string) => void;
 }
 
 const convertMsToString = (ms: string) => {
   return new Date(+ms).toLocaleString();
 };
-const TodoItem: React.FC<ITodoItemProps> = ({ todo, onComplete }) => {
+const TodoItem: React.FC<ITodoItemProps> = ({ todo, onComplete, onDelete }) => {
   return (
     <div className={s.container}>
       <input
@@ -21,6 +24,9 @@ const TodoItem: React.FC<ITodoItemProps> = ({ todo, onComplete }) => {
       />
       <div className={s.title}>{todo.title}</div>
       <div className={s.date}>{convertMsToString(todo.createdAt)}</div>
+      <button className={s.delete} onClick={() => onDelete(todo.id)}>
+        <FontAwesomeIcon icon={faTrash} />
+      </button>
     </div>
   );
 };

@@ -90,7 +90,7 @@ function App() {
   return (
     <>
       <div className="App">
-        <Header openPopup={openPopup} isOpened={isOpen} />
+        <Header openPopup={openPopup} isOpened={isOpen} loggedIn={!!user} />
         <Timer
           userTime={userTime}
           counter={pomodoroCounter}

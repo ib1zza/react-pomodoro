@@ -28,9 +28,9 @@ const UserInfo: React.FC<IUserInfoProps> = ({ user }) => {
           <div className={s.email}>{user.email}</div>
         </div>
       </div>
-      <div className={s.logout}>
+      <button className={s.logout}>
         <FontAwesomeIcon icon={faArrowRightFromBracket} onClick={logout} />
-      </div>
+      </button>
     </div>
   );
 };

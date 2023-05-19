@@ -6,6 +6,7 @@ import { addToHistory } from "@utils/queries/addToHistory";
 import { db } from "@/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import { ITodo } from "@components/TodoList/TodoList";
+import { increaseTodoCount } from "@utils/queries/increaseTodoCount";
 
 export const useHistory = (
   initialValue?: HistoryItem[]
@@ -55,6 +56,7 @@ export const useHistory = (
     setHistory([...history, newHistory]);
     if (!user) return;
     addToHistory(user.uid, newHistory);
+    increaseTodoCount(user.uid);
   };
 
   useEffect(() => {

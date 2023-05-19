@@ -13,6 +13,7 @@ interface IUserInfoProps {
 const UserInfo: React.FC<IUserInfoProps> = ({ user }) => {
   const { logout } = useAuth();
 
+  const userInfo = getUserInfo(user.uid);
   return (
     <div className={s.container}>
       <div className={s.userInfo}>
@@ -27,6 +28,7 @@ const UserInfo: React.FC<IUserInfoProps> = ({ user }) => {
           <div className={s.displayName}>{user.displayName}</div>
           <div className={s.email}>{user.email}</div>
         </div>
+        {/*<div className={s.todosCounter}>{userInfo.}</div>*/}
       </div>
       <button className={s.logout}>
         <FontAwesomeIcon icon={faArrowRightFromBracket} onClick={logout} />

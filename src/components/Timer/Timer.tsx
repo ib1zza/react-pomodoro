@@ -10,6 +10,7 @@ import { HistoryItem } from "@components/PomodoroHistory/PomodoroHistory";
 import { useTimerContext } from "@/context/TimerContext";
 import { useLocalStorage } from "@hooks/useLocalStorage";
 import { getModeName } from "@utils/getModeName";
+import { increaseTodoCount } from "@utils/queries/increaseTodoCount";
 
 interface ITimerProps {
   mode: Mode;

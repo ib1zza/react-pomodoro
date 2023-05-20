@@ -14,6 +14,7 @@ const Modal: React.FC<PropsWithChildren<IModalProps>> = ({
   close,
 }) => {
   useEffect(() => {
+    document.body.style.overflow = "hidden";
     function listener(event: KeyboardEvent) {
       if (event.key === "Escape") {
         close();
@@ -22,8 +23,9 @@ const Modal: React.FC<PropsWithChildren<IModalProps>> = ({
     document.addEventListener("keydown", listener);
     return () => {
       document.removeEventListener("keydown", listener);
+      document.body.style.overflow = "auto";
     };
-  });
+  }, []);
   return (
     <motion.div
       className={s.container}

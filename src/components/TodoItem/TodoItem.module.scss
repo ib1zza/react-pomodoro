@@ -2,13 +2,30 @@
   display: flex;
   justify-content: space-between;
   padding: 10px 0;
+  gap: 10px;
   .checkbox {
     width: 15px;
     height: 15px;
   }
 
   .title {
+    overflow: hidden;
     font-size: 18px;
+
+  }
+
+  .todoTop {
+    display: flex;
+    input {
+      margin-right: 15px;
+    }
+    max-width: calc(100% - 200px);
+  }
+
+  .todoBottom {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
   }
 
   .delete {
@@ -20,4 +37,14 @@
     }
 
   }
+
+  @media screen and (max-width: 650px) {
+    flex-direction: column;
+
+
+    .todoTop {
+      max-width: 100%;
+    }
+  }
+
 }

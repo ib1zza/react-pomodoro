@@ -11,6 +11,8 @@ $max-width: 600px;
   background-color: rgba(17, 17, 17, 0.47);
   display: flex;
   justify-content: center;
+
+
 }
 
 .body {
@@ -18,8 +20,8 @@ $max-width: 600px;
   margin: auto 0;
   height: auto;
   min-height: 100px;
-  max-width: $max-width;
   width: calc(100% - 20px);
+  max-width: $max-width;
   padding: 30px;
   background-color: $default-bg;
   -webkit-border-radius: $border-radius;
@@ -32,6 +34,7 @@ $max-width: 600px;
 
   @media screen and (max-width: 650px) {
     margin: 10px 0;
+    width: auto;
   }
 }
 

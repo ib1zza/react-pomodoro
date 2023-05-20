@@ -16,17 +16,21 @@ const convertMsToString = (ms: string) => {
 const TodoItem: React.FC<ITodoItemProps> = ({ todo, onComplete, onDelete }) => {
   return (
     <div className={s.container}>
-      <input
-        type="checkbox"
-        checked={todo.completed}
-        onChange={onComplete}
-        className={s.checkbox}
-      />
-      <div className={s.title}>{todo.title}</div>
-      <div className={s.date}>{convertMsToString(todo.createdAt)}</div>
-      <button className={s.delete} onClick={() => onDelete(todo.id)}>
-        <FontAwesomeIcon icon={faTrash} />
-      </button>
+      <div className={s.todoTop}>
+        <input
+          type="checkbox"
+          checked={todo.completed}
+          onChange={onComplete}
+          className={s.checkbox}
+        />
+        <div className={s.title}>{todo.title}</div>
+      </div>
+      <div className={s.todoBottom}>
+        <div className={s.date}>{convertMsToString(todo.createdAt)}</div>
+        <button className={s.delete} onClick={() => onDelete(todo.id)}>
+          <FontAwesomeIcon icon={faTrash} />
+        </button>
+      </div>
     </div>
   );
 };

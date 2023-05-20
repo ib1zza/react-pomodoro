@@ -12,7 +12,12 @@ interface ISettingsProps {
   close: () => void;
 }
 
-const testNum = (s: number | string) => {
+const testNum = (...s: Array<number | string>) => {
+  if (Array.isArray(s)) {
+    return [...s].every(
+      (s) => /\d+$/.test(String(s).trim()) && +s > 0 && +s < 300
+    );
+  }
   return /\d+$/.test(String(s).trim()) && +s > 0 && +s < 300;
 };
 
@@ -26,11 +31,7 @@ const Settings: React.FC<ISettingsProps> = ({ close, setConfig, config }) => {
     e.preventDefault();
     console.log("save");
 
-    if (
-      testNum(config.pomodoro) &&
-      testNum(config.shortBreak) &&
-      testNum(config.longBreak)
-    ) {
+    if (testNum(config.pomodoro, config.shortBreak, config.longBreak)) {
       setConfig({
         pomodoro: +config.pomodoro,
         shortBreak: +config.shortBreak,

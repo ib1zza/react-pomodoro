@@ -26,7 +26,7 @@ const PomodoroHistory: React.FC<IPomodoroHistoryProps> = ({ history }) => {
   return (
     <div className={s.container}>
       <motion.div layout className={s.total}>
-        Completed · {history.length}
+        Today Completed · {history.length}
       </motion.div>
       {history.map((item, index) => {
         return (
